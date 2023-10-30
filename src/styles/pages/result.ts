@@ -10,6 +10,10 @@ export const Container = styled.div`
   align-items: center;
   padding: 1.25rem;
 
+  .back {
+    margin-bottom: 3rem;
+  }
+
   h1 {
     font-size: 2rem;
     text-align: center;

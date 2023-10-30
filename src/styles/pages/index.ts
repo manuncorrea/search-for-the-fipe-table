@@ -7,9 +7,21 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0 1rem;
+
+  h3 {
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 0.5rem;
+  }
 `
+
 export const Box = styled.div`
   width: 30rem;
+  max-width: 100%;
 
   margin: 1.5rem 0;
 
@@ -25,8 +37,15 @@ export const Box = styled.div`
 
   .item {
     margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    gap: 0.5rem;
   }
 `
+
 export const Form = styled.form`
   width: 100%;
 `

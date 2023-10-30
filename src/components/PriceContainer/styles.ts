@@ -12,7 +12,7 @@ export const Container = styled.div`
 
   color: var(--gray-50);
 
-  margin: 0.5rem 0rem;
+  margin: 1rem 0rem;
 
   font-weight: 500;
 `

@@ -1,3 +1,4 @@
+import ButtonBack from '@/components/ButtonBack'
 import PriceContainer from '@/components/PriceContainer'
 import useFipe from '@/hooks/useFipe'
 import { Container } from '@/styles/pages/result'
@@ -7,6 +8,9 @@ export default function Result() {
 
   return (
     <Container>
+      <div className="back">
+        <ButtonBack />
+      </div>
       {selectedCar ? (
         <>
           <h1>
