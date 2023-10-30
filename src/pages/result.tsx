@@ -6,6 +6,8 @@ import { Container } from '@/styles/pages/result'
 export default function Result() {
   const { selectedBrand, selectedModel, selectedYear, selectedCar } = useFipe()
 
+  console.log(selectedCar)
+
   return (
     <Container>
       <div className="back">
@@ -14,8 +16,8 @@ export default function Result() {
       {selectedCar ? (
         <>
           <h1>
-            Tabela Fipe: Preço {selectedBrand?.nome} {selectedModel?.nome}{' '}
-            {selectedYear?.nome}
+            Tabela Fipe: Preço {selectedCar?.Marca} {selectedCar?.Modelo}{' '}
+            {selectedCar?.AnoModelo}
           </h1>
           <PriceContainer>{selectedCar?.Valor}</PriceContainer>
 

@@ -9,7 +9,7 @@ export const LoadingWrapper = styled.div`
 
 export const LoadingSpinner = styled.div`
   border: 16px solid var(--gray-50);
-  border-top: 16px solid #3498db;
+  border-top: 16px solid var(--green-500);
   border-radius: 50%;
   width: 120px;
   height: 120px;
