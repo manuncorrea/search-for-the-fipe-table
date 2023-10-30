@@ -1,4 +1,4 @@
-import { FipeAction, FipeStateProps } from './type'
+import { FipeAction, FipeStateProps } from './types'
 
 const initialState: FipeStateProps = {
   brands: [],

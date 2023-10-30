@@ -3,6 +3,6 @@ export interface AutoCompleteProps<OptionType> {
   label: string
   loading: boolean
   value: OptionType | null
-  onChange: (event: any, value: OptionType | null) => void
+  onChange: (event: unknown, value: OptionType | null) => void
   fullWidth?: boolean
 }

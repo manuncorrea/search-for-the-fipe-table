@@ -1,4 +1,4 @@
-import { Brand, CarProps, FipeAction, Model, Year } from './type'
+import { Brand, CarProps, FipeAction, Model, Year } from './types'
 
 export const setBrands = (brands: Brand[]): FipeAction => ({
   type: 'SET_BRANDS',
