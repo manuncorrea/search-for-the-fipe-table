@@ -1,5 +1,4 @@
 import useFipe from '@/hooks/useFipe'
-import IconButton from '@mui/material/IconButton'
 import { useRouter } from 'next/router'
 import { FaArrowLeft } from 'react-icons/fa'
 import { Back } from './styles'
