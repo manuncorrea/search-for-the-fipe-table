@@ -4,9 +4,7 @@ import useFipe from '@/hooks/useFipe'
 import { Container } from '@/styles/pages/result'
 
 export default function Result() {
-  const { selectedBrand, selectedModel, selectedYear, selectedCar } = useFipe()
-
-  console.log(selectedCar)
+  const { selectedCar } = useFipe()
 
   return (
     <Container>
