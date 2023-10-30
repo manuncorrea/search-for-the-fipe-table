@@ -8,7 +8,6 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
 `
-
 export const Box = styled.div`
   width: 30rem;
 
@@ -17,7 +16,15 @@ export const Box = styled.div`
   align-items: center;
   justify-content: center;
 
-  padding: 1.5rem;
+  padding: 2rem;
+  gap: 1rem;
 
   box-shadow: 0px 0px 15px rgba(227, 224, 230, 1);
+
+  .item {
+    margin-bottom: 1rem;
+  }
+`
+export const Form = styled.form`
+  width: 100%;
 `

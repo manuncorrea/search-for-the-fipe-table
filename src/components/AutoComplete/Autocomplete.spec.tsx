@@ -7,20 +7,30 @@ describe('AutoCompleteComponent', () => {
   test('it renders without crashing', () => {
     render(
       <AutoCompleteComponent
-        options={['Option 1', 'Option 2']}
+        options={[
+          { label: 'Option 1', value: 'Option 1' },
+          { label: 'Option 2', value: 'Option 2' },
+        ]}
         label="Select"
-        onSelect={jest.fn()}
+        loading={false}
+        value={null}
+        onChange={jest.fn()}
       />,
     )
   })
 
   test('it selects value on user interaction', async () => {
-    const onSelectMock = jest.fn()
+    const onChangeMock = jest.fn()
     render(
       <AutoCompleteComponent
-        options={['Option 1', 'Option 2']}
+        options={[
+          { label: 'Option 1', value: 'Option 1' },
+          { label: 'Option 2', value: 'Option 2' },
+        ]}
         label="Select"
-        onSelect={onSelectMock}
+        loading={false}
+        value={null}
+        onChange={onChangeMock}
       />,
     )
 
@@ -30,6 +40,14 @@ describe('AutoCompleteComponent', () => {
       fireEvent.click(screen.getByText('Option 1'))
     })
 
-    expect(onSelectMock).toHaveBeenCalledWith('Option 1')
+    expect(onChangeMock).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        label: 'Option 1',
+        value: 'Option 1',
+      }),
+      expect.anything(),
+      expect.anything(),
+    )
   })
 })

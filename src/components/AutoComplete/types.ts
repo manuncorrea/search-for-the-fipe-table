@@ -1,5 +1,8 @@
-export interface AutoCompleteProps {
-  options: string[]
+export interface AutoCompleteProps<OptionType> {
+  options: OptionType[]
   label: string
-  onSelect: (value: string | null) => void
+  loading: boolean
+  value: OptionType | null
+  onChange: (event: any, value: OptionType | null) => void
+  fullWidth?: boolean
 }

@@ -16,7 +16,7 @@ import {
   Model,
   RootStateProps,
   Year,
-} from './type'
+} from './types'
 
 interface FipeProviderProps {
   children: ReactNode
@@ -28,11 +28,34 @@ export default function FipeProvider({ children }: FipeProviderProps) {
   const dispatch = useDispatch()
   const state = useSelector((state: RootStateProps) => state.fipe)
 
+  const setSelectBrand = (brand: Brand | null) => {
+    dispatch({ type: 'SET_SELECTED_BRAND', payload: brand })
+    if (brand === null) {
+      dispatch({ type: 'SET_SELECTED_MODEL', payload: null })
+      dispatch({ type: 'SET_SELECTED_YEAR', payload: null })
+    }
+  }
+
+  const setSelectModel = (model: Model | null) => {
+    dispatch({ type: 'SET_SELECTED_MODEL', payload: model })
+    if (model === null) {
+      dispatch({ type: 'SET_SELECTED_YEAR', payload: null })
+    }
+  }
+
+  const setSelectYear = useCallback(
+    (year: Year | null) => {
+      dispatch({ type: 'SET_SELECTED_YEAR', payload: year })
+    },
+    [dispatch],
+  )
+
   useEffect(() => {
     const getCarBrands = async () => {
       try {
-        const { data } = await api.get<Brand[]>('/')
-        dispatch(setBrands(data))
+        const { data } = await api.get<Brand[]>('/marcas')
+        const options = data.map((item) => ({ ...item, label: item.nome }))
+        dispatch(setBrands(options))
       } catch (err) {
         console.error(
           'Houve um problema ao carregar as marcas, por favor tente novamente mais tarde.',
@@ -44,13 +67,24 @@ export default function FipeProvider({ children }: FipeProviderProps) {
   }, [dispatch])
 
   useEffect(() => {
-    if (state.selectedBrand?.code) {
+    setSelectYear(null)
+    if (state.selectedBrand?.codigo) {
       const getCarModel = async () => {
         try {
-          const { data } = await api.get<Model[]>(
-            `${state.selectedBrand?.code}/modelos`,
+          setYears([])
+
+          const { data } = await api.get<{ modelos: Model[] }>(
+            `marcas/${state.selectedBrand?.codigo}/modelos`,
           )
-          dispatch(setModels(data))
+
+          console.log(data)
+
+          const options = data.modelos.map((item) => ({
+            ...item,
+            label: item.nome,
+          }))
+
+          dispatch(setModels(options))
         } catch (error) {
           console.error(
             'Houve um problema ao carregar os modelos, por favor tente novamente mais tarde.',
@@ -59,16 +93,19 @@ export default function FipeProvider({ children }: FipeProviderProps) {
       }
       getCarModel()
     }
-  }, [dispatch, state.selectedBrand])
+  }, [dispatch, setSelectYear, state.selectedBrand])
 
   useEffect(() => {
-    if (state.selectedModel?.code && state.selectedBrand?.code) {
+    if (state.selectedModel?.codigo && state.selectedBrand?.codigo) {
       const getCarYears = async () => {
         try {
           const { data } = await api.get<Year[]>(
-            `${state.selectedBrand?.code}/modelos/${state.selectedModel?.code}/anos`,
+            `marcas/${state.selectedBrand?.codigo}/modelos/${state.selectedModel?.codigo}/anos`,
           )
-          dispatch(setYears(data))
+
+          const options = data.map((item) => ({ ...item, label: item.nome }))
+
+          dispatch(setYears(options))
         } catch (error) {
           console.error(
             'Houve um problema ao carregar os anos, por favor tente novamente mais tarde.',
@@ -79,26 +116,33 @@ export default function FipeProvider({ children }: FipeProviderProps) {
     }
   }, [dispatch, state.selectedBrand, state.selectedModel])
 
-  const handleGetCarPrice = useCallback(async () => {
+  const getCarPrice = useCallback(async () => {
     if (
-      !state.selectedBrand?.code ||
-      !state.selectedModel?.code ||
-      !state.selectedYear?.code
+      !state.selectedBrand?.codigo ||
+      !state.selectedModel?.codigo ||
+      !state.selectedYear?.codigo
     ) {
       console.error('Preencha todos os campos para realizar a busca.')
       return false
     }
+
     try {
       dispatch(setIsCarPriceLoading(true))
-      const { data } = await api.get<CarProps>(
-        `${state.selectedBrand?.code}/modelos/${state.selectedModel?.code}/anos/${state.selectedYear?.code}`,
-      )
+
+      const apiUrl = `/marcas/${state.selectedBrand?.codigo}/modelos/${state.selectedModel?.codigo}/anos/${state.selectedYear?.codigo}`
+
+      const { data } = await api.get<CarProps>(apiUrl)
+
       dispatch(setSelectedCarSpecification(data))
+
       return true
     } catch (error) {
+      console.error(error)
+
       console.error(
         'Houve um problema ao consultar o valor do veículo, por favor tente novamente mais tarde.',
       )
+
       return false
     } finally {
       dispatch(setIsCarPriceLoading(false))
@@ -106,7 +150,10 @@ export default function FipeProvider({ children }: FipeProviderProps) {
   }, [dispatch, state.selectedBrand, state.selectedModel, state.selectedYear])
 
   const value = {
-    handleGetCarPrice,
+    getCarPrice,
+    setSelectBrand,
+    setSelectModel,
+    setSelectYear,
     brands: state.brands,
     selectedBrand: state.selectedBrand,
     models: state.models,
